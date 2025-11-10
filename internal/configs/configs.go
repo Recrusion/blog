@@ -78,6 +78,10 @@ func (s *ServerConfig) GetPort() string {
 	return ":" + strconv.Itoa(s.port)
 }
 
+func (d *DatabaseConfig) GetDBDriver() string {
+	return d.dbDriver
+}
+
 func (d *DatabaseConfig) GetDSN() string {
 	switch d.dbDriver {
 	case "postgres":
