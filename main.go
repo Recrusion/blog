@@ -16,12 +16,12 @@ func main() {
 
 	log.Printf("config created successfully: %+v", cfg)
 
-	db, err := repository.ConnectDatabase(cfg.DatabaseConfig.GetDBDriver(), cfg.DatabaseConfig.GetDSN())
+	db, err := repository.ConnectDatabase(cfg.GetDatabaseConfig().GetDBDriver(), cfg.GetDatabaseConfig().GetDSN())
 	if err != nil {
 		log.Fatalf("failed connection to database: %v", err)
 	}
 	defer db.Close()
 	log.Printf("connection to database successfully: %+v", db)
 
-	http.ListenAndServe(cfg.ServerConfig.GetPort(), nil)
+	http.ListenAndServe(cfg.GetServerConfig().GetPort(), nil)
 }
