@@ -47,6 +47,10 @@ func newDatabaseConfig(dbDriver, dbName, username, password, host string, port i
 		return nil, fmt.Errorf("invalid database port: %d", port)
 	}
 
+	if host == "" {
+		return nil, errors.New("database host cannot be empty")
+	}
+
 	return &databaseConfig{
 		dbDriver: dbDriver,
 		dbName:   dbName,
