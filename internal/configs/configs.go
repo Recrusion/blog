@@ -7,25 +7,25 @@ import (
 )
 
 type Config struct {
-	ServerConfig   ServerConfig
-	DatabaseConfig DatabaseConfig
+	serverConfig   serverConfig
+	databaseConfig databaseConfig
 }
 
-type ServerConfig struct {
+type serverConfig struct {
 	port int
 }
 
-func newServerConfig(port int) (*ServerConfig, error) {
+func newServerConfig(port int) (*serverConfig, error) {
 	if port <= 0 || port > 65535 {
 		return nil, fmt.Errorf("invalid server port: %d", port)
 	}
 
-	return &ServerConfig{
+	return &serverConfig{
 		port: port,
 	}, nil
 }
 
-type DatabaseConfig struct {
+type databaseConfig struct {
 	dbDriver string
 	dbName   string
 	username string
@@ -34,7 +34,7 @@ type DatabaseConfig struct {
 	port     int
 }
 
-func newDatabaseConfig(dbDriver, dbName, username, password, host string, port int) (*DatabaseConfig, error) {
+func newDatabaseConfig(dbDriver, dbName, username, password, host string, port int) (*databaseConfig, error) {
 	if dbDriver == "" {
 		return nil, errors.New("database driver cannot be empty")
 	}
@@ -47,7 +47,7 @@ func newDatabaseConfig(dbDriver, dbName, username, password, host string, port i
 		return nil, fmt.Errorf("invalid database port: %d", port)
 	}
 
-	return &DatabaseConfig{
+	return &databaseConfig{
 		dbDriver: dbDriver,
 		dbName:   dbName,
 		username: username,
@@ -69,20 +69,28 @@ func NewConfig(serverPort, dbPort int, dbDriver, dbName, username, password, hos
 	}
 
 	return &Config{
-		ServerConfig:   *serverConfig,
-		DatabaseConfig: *databaseConfig,
+		serverConfig:   *serverConfig,
+		databaseConfig: *databaseConfig,
 	}, nil
 }
 
-func (s *ServerConfig) GetPort() string {
+func (c *Config) GetServerConfig() *serverConfig {
+	return &c.serverConfig
+}
+
+func (c *Config) GetDatabaseConfig() *databaseConfig {
+	return &c.databaseConfig
+}
+
+func (s *serverConfig) GetPort() string {
 	return ":" + strconv.Itoa(s.port)
 }
 
-func (d *DatabaseConfig) GetDBDriver() string {
+func (d *databaseConfig) GetDBDriver() string {
 	return d.dbDriver
 }
 
-func (d *DatabaseConfig) GetDSN() string {
+func (d *databaseConfig) GetDSN() string {
 	switch d.dbDriver {
 	case "postgres":
 		return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
