@@ -12,7 +12,7 @@ import (
 func main() {
 	env, err := loader.LoadFromEnv()
 	if err != nil {
-		log.Printf(".env undefined: %v", err)
+		log.Fatalf(".env undefined: %v", err)
 	}
 
 	cfg, err := configs.NewConfig(env.GetServerPort(), env.GetDBPort(), env.GetDBDriver(), env.GetDBName(), env.GetDBUsername(), env.GetDBPassword(), env.GetDBHost())
