@@ -18,7 +18,3 @@ func ConnectDatabase(dbDriver, dsn string) (*sqlx.DB, error) {
 	}
 	return db, nil
 }
-
-func (d *Database) Close() error {
-	return d.db.Close()
-}

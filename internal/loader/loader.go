@@ -3,16 +3,17 @@ package loader
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
 
 type Env struct {
-	serverPort string
-	dbPort     string
+	serverPort int
+	dbPort     int
 	dbDriver   string
 	dbName     string
-	username   string
+	dbUsername string
 	password   string
 	dbHost     string
 }
@@ -21,9 +22,17 @@ func getEnv(key string) string {
 	return os.Getenv(key)
 }
 
-func validateValue(key string, defaultValue string) string {
+func validateValueString(key, defaultValue string) string {
 	value := getEnv(key)
 	if value == "" {
+		return defaultValue
+	}
+	return value
+}
+
+func validateValueInt(key string, defaultValue int) int {
+	value, _ := strconv.Atoi(getEnv(key))
+	if value == 0 {
 		return defaultValue
 	}
 	return value
@@ -36,22 +45,22 @@ func LoadFromEnv() (*Env, error) {
 	}
 
 	env := &Env{
-		serverPort: validateValue("SERVER_PORT", "8080"),
-		dbPort:     validateValue("DB_PORT", "5432"),
-		dbDriver:   validateValue("DB_DRIVER", "postgres"),
-		dbName:     validateValue("DB_NAME", "postgres"),
-		username:   validateValue("USERNAME", "postgres"),
-		password:   validateValue("PASSWORD", "postgres"),
-		dbHost:     validateValue("DB_HOST", "localhost"),
+		serverPort: validateValueInt("SERVER_PORT", 8080),
+		dbPort:     validateValueInt("DB_PORT", 5432),
+		dbDriver:   validateValueString("DB_DRIVER", "postgres"),
+		dbName:     validateValueString("DB_NAME", "blog"),
+		dbUsername: validateValueString("DB_USERNAME", "postgres"),
+		password:   validateValueString("PASSWORD", "postgres"),
+		dbHost:     validateValueString("DB_HOST", "localhost"),
 	}
 	return env, nil
 }
 
-func (e *Env) GetServerPort() string {
+func (e *Env) GetServerPort() int {
 	return e.serverPort
 }
 
-func (e *Env) GetDBPort() string {
+func (e *Env) GetDBPort() int {
 	return e.dbPort
 }
 
@@ -64,7 +73,7 @@ func (e *Env) GetDBName() string {
 }
 
 func (e *Env) GetDBUsername() string {
-	return e.username
+	return e.dbUsername
 }
 
 func (e *Env) GetDBPassword() string {
