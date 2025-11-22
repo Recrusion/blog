@@ -10,11 +10,13 @@ import (
 )
 
 func main() {
+	// Инициализация переменных окружения
 	env, err := loader.LoadFromEnv()
 	if err != nil {
 		log.Fatalf(".env undefined: %v", err)
 	}
 
+	// Инициализация конфига
 	cfg, err := configs.NewConfig(env.GetServerPort(), env.GetDBPort(), env.GetDBDriver(), env.GetDBName(), env.GetDBUsername(), env.GetDBPassword(), env.GetDBHost())
 	if err != nil {
 		log.Fatalf("config creation failed: %v", err)
@@ -22,6 +24,7 @@ func main() {
 
 	log.Printf("config created successfully")
 
+	// Создание объекта базы данных
 	db, err := repository.ConnectDatabase(cfg.GetDatabaseConfig().GetDBDriver(), cfg.GetDatabaseConfig().GetDSN())
 	if err != nil {
 		log.Fatalf("failed connection to database: %v", err)
@@ -29,7 +32,8 @@ func main() {
 	defer db.Close()
 	log.Printf("connection to database successfully")
 
-	if err := http.ListenAndServe(cfg.GetServerConfig().GetPort(), nil); err != nil {
+	// Инициализация сервера
+	if err = http.ListenAndServe(cfg.GetServerConfig().GetPort(), nil); err != nil {
 		log.Fatalf("server is down: %v", err)
 	}
 }
