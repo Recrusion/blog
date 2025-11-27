@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/Recrusion/blog-api/internal/configs"
 	"github.com/Recrusion/blog-api/internal/loader"
@@ -12,30 +13,33 @@ import (
 func main() {
 	e := echo.New()
 
+	// инициализация логгера
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
 	// инициализация переменных окружения
 	env, err := loader.LoadFromEnv()
 	if err != nil {
-		log.Fatalf("[ERROR] .env undefined: %v", err)
+		logger.Error("error loading env variables", err)
 	}
 
 	// инициализация конфига
 	cfg, err := configs.NewConfig(env.GetServerPort(), env.GetDBPort(), env.GetDBDriver(), env.GetDBName(), env.GetDBUsername(), env.GetDBPassword(), env.GetDBHost())
 	if err != nil {
-		log.Fatalf("[ERROR] config creation failed: %v", err)
+		logger.Error("config creation failed", err)
 	}
 
-	log.Printf("[INFO] config created successfully")
+	logger.Info("config created successfully")
 
 	// создание объекта базы данных
 	db, err := repository.ConnectDatabase(cfg.GetDatabaseConfig().GetDBDriver(), cfg.GetDatabaseConfig().GetDSN())
 	if err != nil {
-		log.Fatalf("[ERROR] failed connection to database: %v", err)
+		logger.Error("failed connection to database", err)
 	}
 	defer db.Close()
-	log.Printf("[INFO] connection to database successfully")
+	logger.Info("connection to database successfully")
 
 	// старт сервера
 	if err = e.Start(cfg.GetServerConfig().GetPort()); err != nil {
-		log.Fatalf("[ERROR] failed to start server: %v", err)
+		logger.Error("failed to start server", err)
 	}
 }
