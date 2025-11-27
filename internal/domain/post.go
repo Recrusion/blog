@@ -1,4 +1,4 @@
-package post
+package domain
 
 import "time"
 
@@ -13,15 +13,10 @@ type Post struct {
 	Tags      []string  `json:"Tags"`
 }
 
-// создание нового поста
-func NewPost(id int64, title string, content string, author string, tags []string) *Post {
-	return &Post{
-		ID:        id,
-		Title:     title,
-		Content:   content,
-		Author:    author,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Tags:      tags,
-	}
+// интерфейс слоя взаимодействия с базой данных
+type PostRepository interface {
+	CreatePost(post *Post) error
+	GetPost(id int64) (*Post, error)
+	DeletePost(id int64) error
+	UpdatePost(id int64, title, content string, updatedAt time.Time, tags []string) error
 }
