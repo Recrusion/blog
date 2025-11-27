@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/Recrusion/blog-api/internal/post"
@@ -17,12 +16,13 @@ func (d *Database) CreatePost(post *post.Post) error {
 }
 
 // получить пост по id
-func (d *Database) GetPost(id int64) (*sql.Result, error) {
-	post, err := d.db.NamedExec("select * from post where id = :id", id)
+func (d *Database) GetPost(id int64) (*post.Post, error) {
+	post := &post.Post{}
+	err := d.db.Get(post, "select * from post where id = :id", id)
 	if err != nil {
 		return nil, fmt.Errorf("error getting post: %w", err)
 	}
-	return &post, nil
+	return post, nil
 }
 
 // удалить пост по id
