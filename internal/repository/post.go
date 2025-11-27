@@ -17,7 +17,7 @@ func (d *Database) CreatePost(post *post.Post) error {
 
 // получить пост по id
 func (d *Database) GetPost(id int64) (*post.Post, error) {
-	post := &post.Post{}
+	post := post.NewPost(0, "", "", "", nil)
 	err := d.db.Get(post, "select * from post where id = :id", id)
 	if err != nil {
 		return nil, fmt.Errorf("error getting post: %w", err)

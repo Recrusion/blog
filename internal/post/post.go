@@ -14,12 +14,12 @@ type Post struct {
 }
 
 // создание нового поста
-func (p *Post) NewPost(ID int64, title string, content string, tags []string) *Post {
+func NewPost(id int64, title string, content string, author string, tags []string) *Post {
 	return &Post{
-		ID:        ID,
+		ID:        id,
 		Title:     title,
 		Content:   content,
-		Author:    p.Author,
+		Author:    author,
 		CreatedAt: time.Now(),
 		Tags:      tags,
 	}
