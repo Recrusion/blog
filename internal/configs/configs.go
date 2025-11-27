@@ -68,19 +68,19 @@ func newDatabaseConfig(dbDriver, dbName, username, password, host string, port i
 
 // создание полной конфигурации приложения
 func NewConfig(serverPort, dbPort int, dbDriver, dbName, username, password, host string) (*Config, error) {
-	serverConfig, err := newServerConfig(serverPort)
+	srvConfig, err := newServerConfig(serverPort)
 	if err != nil {
 		return nil, err
 	}
 
-	databaseConfig, err := newDatabaseConfig(dbDriver, dbName, username, password, host, dbPort)
+	dbConfig, err := newDatabaseConfig(dbDriver, dbName, username, password, host, dbPort)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Config{
-		serverConfig:   *serverConfig,
-		databaseConfig: *databaseConfig,
+		serverConfig:   *srvConfig,
+		databaseConfig: *dbConfig,
 	}, nil
 }
 
