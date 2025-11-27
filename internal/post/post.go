@@ -21,6 +21,7 @@ func NewPost(id int64, title string, content string, author string, tags []strin
 		Content:   content,
 		Author:    author,
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 		Tags:      tags,
 	}
 }

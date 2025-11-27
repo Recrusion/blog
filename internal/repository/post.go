@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Recrusion/blog-api/internal/post"
 )
@@ -35,13 +36,14 @@ func (d *Database) DeletePost(id int64) error {
 }
 
 // обновить пост
-func (d *Database) UpdatePost(id int64, title, content string, tags []string) error {
-	_, err := d.db.NamedExec("update post set title = :title, content = :content, tags = :tags where id = :id",
+func (d *Database) UpdatePost(id int64, title, content string, updatedAt time.Time, tags []string) error {
+	_, err := d.db.NamedExec("update post set title = :title, content = :content, updated_at = :updatedAt, tags = :tags where id = :id",
 		map[string]interface{}{
-			"title":   title,
-			"content": content,
-			"tags":    tags,
-			"id":      id})
+			"title":      title,
+			"content":    content,
+			"updated_at": updatedAt,
+			"tags":       tags,
+			"id":         id})
 
 	if err != nil {
 		return fmt.Errorf("error updating post: %w", err)
