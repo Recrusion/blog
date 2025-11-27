@@ -27,7 +27,7 @@ func (d *Database) GetPost(id int64) (*post.Post, error) {
 
 // удалить пост по id
 func (d *Database) DeletePost(id int64) error {
-	_, err := d.db.NamedExec("delete from post where id = :id", id)
+	_, err := d.db.Exec("delete from post where id = :id", id)
 	if err != nil {
 		return fmt.Errorf("error deleting post: %w", err)
 	}
