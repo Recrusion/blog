@@ -14,3 +14,12 @@ func (d *Database) CreatePost(post *post.Post) error {
 	}
 	return nil
 }
+
+// получить пост по id
+func (d *Database) GetPost(id int64) error {
+	_, err := d.db.NamedExec("select * from post where id = :id", id)
+	if err != nil {
+		return fmt.Errorf("error getting post: %w", err)
+	}
+	return nil
+}
