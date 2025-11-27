@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Recrusion/blog-api/internal/post"
+	"github.com/Recrusion/blog-api/internal/domain"
 )
 
 // создание поста в базе данных
-func (d *Database) CreatePost(post *post.Post) error {
-	_, err := d.db.NamedExec("insert into post (id, title, content, author, createdAt, updatedAt, tags) values (:id, :title, :content, :author, :createdAt, :updatedAt, :tags)", post)
+func (d *Database) CreatePost(post *domain.Post) error {
+	_, err := d.db.NamedExec("insert into post (title, content, author, createdAt, updatedAt, tags) values (:title, :content, :author, :createdAt, :updatedAt, :tags) returning id", post)
 	if err != nil {
 		return fmt.Errorf("error creating post: %w", err)
 	}
@@ -17,13 +17,13 @@ func (d *Database) CreatePost(post *post.Post) error {
 }
 
 // получить пост по id
-func (d *Database) GetPost(id int64) (*post.Post, error) {
-	post := post.NewPost(0, "", "", "", nil)
+func (d *Database) GetPost(id int64) (*domain.Post, error) {
+	var post domain.Post
 	err := d.db.Get(post, "select * from post where id = :id", id)
 	if err != nil {
 		return nil, fmt.Errorf("error getting post: %w", err)
 	}
-	return post, nil
+	return &post, nil
 }
 
 // удалить пост по id
