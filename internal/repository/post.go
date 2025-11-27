@@ -6,7 +6,7 @@ import (
 	"github.com/Recrusion/blog-api/internal/post"
 )
 
-// Создание поста в базе данных
+// создание поста в базе данных
 func (d *Database) CreatePost(post *post.Post) error {
 	_, err := d.db.NamedExec("insert into post (id, title, content, author, createdAt, updatedAt, tags) values (:id, :title, :content, :author, :createdAt, :updatedAt, :tags)", post)
 	if err != nil {

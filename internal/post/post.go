@@ -2,7 +2,7 @@ package post
 
 import "time"
 
-// Структура поста
+// структура поста
 type Post struct {
 	ID        int64     `json:"ID"`
 	Title     string    `json:"Title"`
@@ -13,7 +13,7 @@ type Post struct {
 	Tags      []string  `json:"Tags"`
 }
 
-// Создание нового поста
+// создание нового поста
 func (p *Post) NewPost(ID int64, title string, content string, tags []string) *Post {
 	return &Post{
 		ID:        ID,

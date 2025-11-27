@@ -11,7 +11,7 @@ type Database struct {
 	db *sqlx.DB
 }
 
-// Создание подключения к базе данных
+// создание подключения к базе данных
 func ConnectDatabase(dbDriver, dsn string) (*sqlx.DB, error) {
 	db, err := sqlx.Connect(dbDriver, dsn)
 	if err != nil {

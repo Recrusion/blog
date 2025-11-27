@@ -6,18 +6,18 @@ import (
 	"strconv"
 )
 
-// Полная конфигурация приложения
+// полная конфигурация приложения
 type Config struct {
 	serverConfig   serverConfig
 	databaseConfig databaseConfig
 }
 
-// Конфигурация сервера
+// конфигурация сервера
 type serverConfig struct {
 	port int
 }
 
-// Создание конфигурации сервера
+// создание конфигурации сервера
 func newServerConfig(port int) (*serverConfig, error) {
 	if port <= 0 || port > 65535 {
 		return nil, fmt.Errorf("invalid server port: %d", port)
@@ -28,7 +28,7 @@ func newServerConfig(port int) (*serverConfig, error) {
 	}, nil
 }
 
-// Конфигурация базы данных
+// конфигурация базы данных
 type databaseConfig struct {
 	dbDriver string
 	dbName   string
@@ -38,7 +38,7 @@ type databaseConfig struct {
 	port     int
 }
 
-// Создание конфигурации базы данных
+// создание конфигурации базы данных
 func newDatabaseConfig(dbDriver, dbName, username, password, host string, port int) (*databaseConfig, error) {
 	if dbDriver == "" {
 		return nil, errors.New("database driver cannot be empty")
@@ -66,7 +66,7 @@ func newDatabaseConfig(dbDriver, dbName, username, password, host string, port i
 	}, nil
 }
 
-// Создание полной конфигурации приложения
+// создание полной конфигурации приложения
 func NewConfig(serverPort, dbPort int, dbDriver, dbName, username, password, host string) (*Config, error) {
 	serverConfig, err := newServerConfig(serverPort)
 	if err != nil {
@@ -84,7 +84,7 @@ func NewConfig(serverPort, dbPort int, dbDriver, dbName, username, password, hos
 	}, nil
 }
 
-// Геттеры для получения данных конфигурации вне пакета
+// геттеры для получения данных конфигурации вне пакета
 func (c *Config) GetServerConfig() *serverConfig {
 	return &c.serverConfig
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Переменные окружения для конфигурации
+// переменные окружения для конфигурации
 type Env struct {
 	serverPort int
 	dbPort     int
@@ -19,12 +19,12 @@ type Env struct {
 	dbHost     string
 }
 
-// Получения значения переменной окружения по ключу
+// получения значения переменной окружения по ключу
 func getEnv(key string) string {
 	return os.Getenv(key)
 }
 
-// Валидация значения строкового типа
+// валидация значения строкового типа
 func validateValueString(key, defaultValue string) string {
 	value := getEnv(key)
 	if value == "" {
@@ -33,7 +33,7 @@ func validateValueString(key, defaultValue string) string {
 	return value
 }
 
-// Валидация значения целочисленного типа
+// валидация значения целочисленного типа
 func validateValueInt(key string, defaultValue int) int {
 	value, _ := strconv.Atoi(getEnv(key))
 	if value == 0 {
@@ -42,7 +42,7 @@ func validateValueInt(key string, defaultValue int) int {
 	return value
 }
 
-// Загрузка переменных окружения и их инициализация в проекте
+// загрузка переменных окружения и их инициализация в проекте
 func LoadFromEnv() (*Env, error) {
 	err := godotenv.Load()
 	if err != nil {
@@ -61,7 +61,7 @@ func LoadFromEnv() (*Env, error) {
 	return env, nil
 }
 
-// Геттеры для получения значений переменных окружения вне пакета
+// геттеры для получения значений переменных окружения вне пакета
 func (e *Env) GetServerPort() int {
 	return e.serverPort
 }
