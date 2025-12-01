@@ -1,22 +1,17 @@
 package domain
 
-import "time"
+import (
+	"github.com/lib/pq"
+	"time"
+)
 
 // структура поста
 type Post struct {
-	ID        int64     `json:"ID"`
-	Title     string    `json:"Title"`
-	Content   string    `json:"Content"`
-	Author    string    `json:"Author"`
-	CreatedAt time.Time `json:"CreatedAt"`
-	UpdatedAt time.Time `json:"UpdatedAt"`
-	Tags      []string  `json:"Tags"`
-}
-
-// интерфейс слоя взаимодействия с базой данных
-type PostRepository interface {
-	CreatePost(post *Post) error
-	GetPost(id int64) (*Post, error)
-	DeletePost(id int64) error
-	UpdatePost(id int64, title, content string, updatedAt time.Time, tags []string) error
+	ID        int64          `json:"ID" db:"id"`
+	Title     string         `json:"Title" db:"title"`
+	Content   string         `json:"Content" db:"content"`
+	Author    string         `json:"Author" db:"author"`
+	CreatedAt time.Time      `json:"CreatedAt" db:"created_at"`
+	UpdatedAt time.Time      `json:"UpdatedAt" db:"updated_at"`
+	Tags      pq.StringArray `json:"Tags" db:"tags"`
 }
