@@ -5,8 +5,10 @@ import (
 	"os"
 
 	"github.com/Recrusion/blog-api/internal/configs"
+	"github.com/Recrusion/blog-api/internal/handlers"
 	"github.com/Recrusion/blog-api/internal/loader"
 	"github.com/Recrusion/blog-api/internal/repository"
+	"github.com/Recrusion/blog-api/internal/service"
 	"github.com/labstack/echo/v4"
 )
 
@@ -38,6 +40,12 @@ func main() {
 	defer db.Close()
 	logger.Info("connection to database successfully")
 
+	database := repository.NewDatabase(db)
+	service := service.NewService(database)
+	handler := handlers.NewHandlers(service)
+
+	e.POST("/createpost", handler.CreatePost)
+	e.GET("/getpost:id", handler.GetPost)
 	// старт сервера
 	if err = e.Start(cfg.GetServerConfig().GetPort()); err != nil {
 		logger.Error("failed to start server", err)
