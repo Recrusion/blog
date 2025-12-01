@@ -9,7 +9,7 @@ import (
 
 // создание поста в базе данных
 func (d *Database) CreatePost(post *domain.Post) error {
-	_, err := d.db.NamedExec("insert into post (title, content, author, createdAt, updatedAt, tags) values (:title, :content, :author, :createdAt, :updatedAt, :tags) returning id", post)
+	_, err := d.db.NamedExec("insert into post (title, content, author, created_at, updated_at, tags) values (:title, :content, :author, :created_at, :updated_at, :tags) returning id", post)
 	if err != nil {
 		return fmt.Errorf("error creating post: %w", err)
 	}
@@ -19,7 +19,7 @@ func (d *Database) CreatePost(post *domain.Post) error {
 // получить пост по id
 func (d *Database) GetPost(id int64) (*domain.Post, error) {
 	var post domain.Post
-	err := d.db.Get(post, "select * from post where id = :id", id)
+	err := d.db.Get(&post, "select * from post where id = $1", id)
 	if err != nil {
 		return nil, fmt.Errorf("error getting post: %w", err)
 	}
