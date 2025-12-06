@@ -32,3 +32,15 @@ func (s *Service) GetPost(id int64) (*domain.Post, error) {
 	}
 	return post, nil
 }
+
+func (s *Service) DeletePost(id int64) error {
+	if id == 0 {
+		return errors.New("id cannot be empty")
+	}
+
+	err := s.service.DeletePost(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
