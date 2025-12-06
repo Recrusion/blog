@@ -46,6 +46,7 @@ func main() {
 
 	e.POST("/createpost", handler.CreatePost)
 	e.GET("/getpost:id", handler.GetPost)
+	e.DELETE("/deletepost:id", handler.DeletePost)
 	// старт сервера
 	if err = e.Start(cfg.GetServerConfig().GetPort()); err != nil {
 		logger.Error("failed to start server", err)
